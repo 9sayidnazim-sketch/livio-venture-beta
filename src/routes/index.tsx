@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import {
   ArrowRight,
@@ -217,12 +217,12 @@ function Index() {
                     to match, guided end to end.
                   </p>
                   <div className="mt-8 flex items-center gap-3">
-                    <a
-                      href="#universities"
+                    <Link
+                      to="/universities"
                       className="rounded-full bg-brand-bright px-7 py-4 text-sm font-medium text-primary-foreground shadow-soft transition-transform hover:-translate-y-0.5"
                     >
                       Explore Universities
-                    </a>
+                    </Link>
                     <button
                       aria-label="Watch intro"
                       className="grid h-14 w-14 place-items-center rounded-full bg-background/90 text-brand-navy transition-transform hover:scale-105"
@@ -236,12 +236,12 @@ function Index() {
 
             {/* Floating card */}
             <div className="absolute bottom-5 right-5 hidden w-[320px] rounded-[28px] bg-background p-5 shadow-lift md:block">
-              <a
-                href="#universities"
+              <Link
+                to="/universities"
                 className="flex items-center gap-1 text-sm font-medium text-brand"
               >
                 Know More <ArrowRight className="h-4 w-4" />
-              </a>
+              </Link>
               <div className="mt-4 flex -space-x-3">
                 {[uniToronto, uniMelbourne, uniLondon].map((img, i) => (
                   <img
@@ -318,7 +318,11 @@ function Index() {
             className="mt-10 flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
             {[...universities, ...universities].map((u, i) => (
-              <article key={i} className="group w-[290px] shrink-0 snap-start sm:w-[360px]">
+              <Link
+                key={i}
+                to="/universities"
+                className="group block w-[290px] shrink-0 snap-start sm:w-[360px]"
+              >
                 <div className="relative overflow-hidden rounded-[32px]">
                   <img
                     src={u.image}
@@ -336,7 +340,7 @@ function Index() {
                 <p className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground">
                   <MapPin className="h-4 w-4" /> {u.location}
                 </p>
-              </article>
+              </Link>
             ))}
           </div>
         </section>

@@ -4,6 +4,8 @@
 
 - Preserved the existing public Livio landing page and Lovable/TanStack structure.
 - Added the missing authenticated student routes: Home, AI Advisor, Explore, Compare, My Journey, Documents, Profile, Notifications, and Settings.
+- Added a completely public university catalogue and university/course detail flow. Visitors are only sent to authentication when they choose a course/start an application or open Livio AI.
+- Added an illustrative public catalogue fallback so guest browsing remains useful before the anonymous Supabase catalogue policy is deployed.
 - Replaced the five-item mobile navigation with the requested three-item model: Home, AI Advisor, and My Journey.
 - Added profile-based university ranking, search, country filtering, shortlist saving, and a three-university comparison view.
 - Added university detail pages and a working application-start flow that writes to Supabase and routes students into My Journey.
@@ -19,6 +21,7 @@
 - `pnpm run lint` passed with six existing Fast Refresh warnings and no errors.
 - `pnpm run build` passed for the client, SSR, and Cloudflare/Nitro output.
 - Browser verification confirmed the public landing page and branded sign-in page render, and `/app` redirects unauthenticated users to `/auth`.
+- Browser verification also confirmed `/universities` and `/universities/:id` work without authentication, while AI and course-selection actions carry the visitor into sign-in with the correct return destination.
 
 ## Requires external configuration or further work
 

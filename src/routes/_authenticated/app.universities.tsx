@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Outlet, useMatchRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Search } from "lucide-react";
@@ -18,6 +18,7 @@ export const Route = createFileRoute("/_authenticated/app/universities")({
   component: UniversitiesPage,
 });
 function UniversitiesPage() {
+  const matchRoute = useMatchRoute();
   const qc = useQueryClient();
   const [query, setQuery] = useState("");
   const [country, setCountry] = useState("All");
@@ -35,6 +36,7 @@ function UniversitiesPage() {
         `${u.name} ${u.city} ${u.fields.join(" ")}`.toLowerCase().includes(query.toLowerCase()),
     );
   }, [profile, unis, country, query]);
+  if (matchRoute({ to: "/app/universities/$id", fuzzy: true })) return <Outlet />;
   async function toggle(id: string) {
     try {
       const user_id = await getUserId();

@@ -12,8 +12,10 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as UniversitiesRouteImport } from './routes/universities'
 import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
+import { Route as UniversitiesIdRouteImport } from './routes/universities.$id'
 import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticated/app.index'
 import { Route as AuthenticatedAppAdvisorRouteImport } from './routes/_authenticated/app.advisor'
 import { Route as AuthenticatedAppCompareRouteImport } from './routes/_authenticated/app.compare'
@@ -39,6 +41,11 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UniversitiesRoute = UniversitiesRouteImport.update({
+  id: '/universities',
+  path: '/universities',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedAppRoute = AuthenticatedAppRouteImport.update({
   id: '/app',
   path: '/app',
@@ -48,6 +55,11 @@ const AuthenticatedOnboardingRoute = AuthenticatedOnboardingRouteImport.update({
   id: '/onboarding',
   path: '/onboarding',
   getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const UniversitiesIdRoute = UniversitiesIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => UniversitiesRoute,
 } as any)
 const AuthenticatedAppIndexRoute = AuthenticatedAppIndexRouteImport.update({
   id: '/',
@@ -108,8 +120,10 @@ const AuthenticatedAppUniversitiesIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/universities': typeof UniversitiesRouteWithChildren
   '/app': typeof AuthenticatedAppRouteWithChildren
   '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/universities/$id': typeof UniversitiesIdRoute
   '/app/advisor': typeof AuthenticatedAppAdvisorRoute
   '/app/compare': typeof AuthenticatedAppCompareRoute
   '/app/documents': typeof AuthenticatedAppDocumentsRoute
@@ -124,7 +138,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/universities': typeof UniversitiesRouteWithChildren
   '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/universities/$id': typeof UniversitiesIdRoute
   '/app/advisor': typeof AuthenticatedAppAdvisorRoute
   '/app/compare': typeof AuthenticatedAppCompareRoute
   '/app/documents': typeof AuthenticatedAppDocumentsRoute
@@ -141,8 +157,10 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/universities': typeof UniversitiesRouteWithChildren
   '/_authenticated/app': typeof AuthenticatedAppRouteWithChildren
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
+  '/universities/$id': typeof UniversitiesIdRoute
   '/_authenticated/app/advisor': typeof AuthenticatedAppAdvisorRoute
   '/_authenticated/app/compare': typeof AuthenticatedAppCompareRoute
   '/_authenticated/app/documents': typeof AuthenticatedAppDocumentsRoute
@@ -159,8 +177,10 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/universities'
     | '/app'
     | '/onboarding'
+    | '/universities/$id'
     | '/app/advisor'
     | '/app/compare'
     | '/app/documents'
@@ -175,7 +195,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/universities'
     | '/onboarding'
+    | '/universities/$id'
     | '/app/advisor'
     | '/app/compare'
     | '/app/documents'
@@ -191,8 +213,10 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/universities'
     | '/_authenticated/app'
     | '/_authenticated/onboarding'
+    | '/universities/$id'
     | '/_authenticated/app/advisor'
     | '/_authenticated/app/compare'
     | '/_authenticated/app/documents'
@@ -209,6 +233,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  UniversitiesRoute: typeof UniversitiesRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -234,6 +259,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/universities': {
+      id: '/universities'
+      path: '/universities'
+      fullPath: '/universities'
+      preLoaderRoute: typeof UniversitiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/app': {
       id: '/_authenticated/app'
       path: '/app'
@@ -247,6 +279,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/onboarding'
       preLoaderRoute: typeof AuthenticatedOnboardingRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/universities/$id': {
+      id: '/universities/$id'
+      path: '/$id'
+      fullPath: '/universities/$id'
+      preLoaderRoute: typeof UniversitiesIdRouteImport
+      parentRoute: typeof UniversitiesRoute
     }
     '/_authenticated/app/': {
       id: '/_authenticated/app/'
@@ -376,10 +415,23 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
+interface UniversitiesRouteChildren {
+  UniversitiesIdRoute: typeof UniversitiesIdRoute
+}
+
+const UniversitiesRouteChildren: UniversitiesRouteChildren = {
+  UniversitiesIdRoute: UniversitiesIdRoute,
+}
+
+const UniversitiesRouteWithChildren = UniversitiesRoute._addFileChildren(
+  UniversitiesRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  UniversitiesRoute: UniversitiesRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
