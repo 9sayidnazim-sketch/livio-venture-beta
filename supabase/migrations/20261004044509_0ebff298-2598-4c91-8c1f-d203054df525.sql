@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.on_application_change() FROM PUBLIC, anon, authenticated;
